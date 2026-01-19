@@ -1,0 +1,16 @@
+{"level":"INFO","ts":"2026-01-19T17:10:10.600+0800","caller":"cmd/main.go:18","msg":"服务正在启动"}
+{"level":"INFO","ts":"2026-01-19T17:10:10.605+0800","caller":"cmd/main.go:29","msg":"服务启动成功","port":"8080"}
+{"level":"INFO","ts":"2026-01-19T17:10:32.252+0800","caller":"middleware/logger.go:23","msg":"request","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.001674857}
+{"level":"INFO","ts":"2026-01-19T19:15:32.178+0800","caller":"cmd/main.go:24","msg":"服务正在启动"}
+{"level":"INFO","ts":"2026-01-19T19:15:32.182+0800","caller":"cmd/main.go:35","msg":"服务启动成功","port":"8080"}
+{"level":"INFO","ts":"2026-01-19T19:16:46.728+0800","caller":"middleware/logger.go:23","msg":"request","status":409,"method":"POST","path":"/register","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":50.87471809}
+{"level":"INFO","ts":"2026-01-19T19:21:58.361+0800","caller":"cmd/main.go:24","msg":"服务正在启动"}
+{"level":"INFO","ts":"2026-01-19T19:21:58.365+0800","caller":"cmd/main.go:35","msg":"服务启动成功","port":"8080"}
+{"level":"INFO","ts":"2026-01-19T19:22:23.461+0800","caller":"middleware/logger.go:23","msg":"request","status":409,"method":"POST","path":"/register","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":17.16110071}
+{"level":"INFO","ts":"2026-01-19T19:22:32.204+0800","caller":"cmd/main.go:24","msg":"服务正在启动"}
+{"level":"INFO","ts":"2026-01-19T19:22:32.215+0800","caller":"cmd/main.go:35","msg":"服务启动成功","port":"8080"}
+{"level":"INFO","ts":"2026-01-19T19:24:45.680+0800","caller":"middleware/logger.go:23","msg":"request","status":200,"method":"POST","path":"/register","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":131.895459045}
+{"level":"INFO","ts":"2026-01-19T19:26:29.219+0800","caller":"middleware/logger.go:23","msg":"request","status":200,"method":"POST","path":"/register","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":6.716413478}
+{"level":"INFO","ts":"2026-01-19T19:26:39.332+0800","caller":"cmd/main.go:24","msg":"服务正在启动"}
+{"level":"INFO","ts":"2026-01-19T19:26:39.333+0800","caller":"cmd/main.go:35","msg":"服务启动成功","port":"8080"}
+{"level":"INFO","ts":"2026-01-19T19:33:14.349+0800","caller":"middleware/logger.go:23","msg":"request","status":200,"method":"POST","path":"/register","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":387.749792108}
