@@ -20,7 +20,11 @@ var (
 	AuthError = NewError(10003, "未授权", http.StatusUnauthorized)
 	NotFound = NewError(10004, "资源不存在", http.StatusNotFound)
 	UserExists = NewError(10005, "用户已存在", http.StatusConflict)
-	UserNotFound = NewError(10006, "用户不存在", http.StatusConflict) // 这个状态码应该写什么？
+	UserNotFound = NewError(10006, "用户不存在", http.StatusNotFound)
+	UserInvalid = NewError(10007, "用户名或者密码错误", http.StatusBadRequest)
+	ErrRefreshTokenInvalid = NewError(10008, "refresh token invalid", http.StatusBadRequest)
+	ErrRefreshTokenExpired = NewError(10009, "refresh token expired", http.StatusBadRequest)
+	ErrRefreshTokenRevoked = NewError(10010, "refresh token revoked", http.StatusBadRequest)
 )
 
 func NewError(code int, msg string, httpCode int) *AppError {

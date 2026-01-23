@@ -2,13 +2,15 @@ package service
 
 import (
 	"context"
-	"database/sql"
+	"errors"
 	"learn-gin/internal/data"
 	"learn-gin/internal/model"
 	repo "learn-gin/internal/repository"
 	"learn-gin/internal/response"
 	"learn-gin/internal/utils"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 
@@ -32,13 +34,6 @@ func NewUserService(tm data.TransactionManager, uRepo repo.UserRepo, wRepo repo.
 }
 
 func (s *userService) Register(ctx context.Context, username, password string) error {
-	status, err := s.userRepo.GetByUsername(ctx, s.tm.GetDB(), username)
-	if err != nil {
-		return err // 这是一个未知错误，直接抛出
-	}
-	if status != nil {
-		return response.UserExists
-	}
 
 	hashedPwd, err := utils.HashPassword(password)
 	if err != nil {
@@ -54,14 +49,17 @@ func (s *userService) Register(ctx context.Context, username, password string) e
 	}
 
 	// 开启事物
-	return s.tm.ExecTx(ctx, func(ctx context.Context, tx repo.DBTX) error {
+	return s.tm.ExecTx(ctx, func(ctx context.Context, tx *gorm.DB) error {
 
 		// 将tx显示传给UserRepo
 		if err := s.userRepo.Create(ctx, tx, user); err != nil {
+			if errors.Is(err, repo.ErrDuplicateKey) {
+				return response.UserExists
+			}
 			return err
 		}
 
-		// 将统一个tx传给WalletRepo
+		// 将同一个tx传给WalletRepo
 		// 因为用的是同一个tx，所以他俩在同一个数据库事务里
 		wallet := &model.Wallet{
 			UserID: user.ID,
@@ -69,6 +67,7 @@ func (s *userService) Register(ctx context.Context, username, password string) e
 			CreatedAt: now,
 			UpdatedAt: now,
 		}
+		// 按照道理来说，应该不会重复吧？
 		if err := s.walletRepo.Create(ctx, tx, wallet); err != nil {
 			return err
 		}
@@ -80,10 +79,14 @@ func (s *userService) Register(ctx context.Context, username, password string) e
 func (s *userService) Login(ctx context.Context,username, password string) (string, error) {
 	user, err := s.userRepo.GetByUsername(ctx, s.tm.GetDB(), username)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, repo.ErrUserNotFound) {
 			return "", response.UserNotFound
 		}
 		return "", err
+	}
+
+	if !utils.CheckPassword(password, user.Password) {
+		return "", response.UserInvalid
 	}
 
 	token, err := utils.GenerateToken(user.ID, user.Username)

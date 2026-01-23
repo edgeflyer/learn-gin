@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"learn-gin/internal/config"
 	"time"
 
@@ -36,6 +37,10 @@ func GenerateToken(userID int64, username string) (string, error) {
 // ParseToken 解析 Token
 func ParseToken(token string) (*Claims, error) {
     tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+
+        if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+            return nil, errors.New("unexpected signing method")
+        }
         return []byte(config.Conf.JWT.Secret), nil
     })
 
@@ -47,5 +52,5 @@ func ParseToken(token string) (*Claims, error) {
         return claims, nil
     }
 
-    return nil, err
+    return nil, errors.New("invalid token")
 }

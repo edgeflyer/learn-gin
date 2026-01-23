@@ -2,9 +2,11 @@ package response
 
 import (
 	"errors"
+	"learn-gin/internal/logger"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type Response struct {
@@ -25,7 +27,7 @@ func Fail(c *gin.Context, err error) {
 	var (
 		// 默认错误信息
 		code = ServerError.Code
-		msg = err.Error()
+		msg = ServerError.Msg
 		httpCode = http.StatusInternalServerError
 	)
 
@@ -36,6 +38,8 @@ func Fail(c *gin.Context, err error) {
 		code = appErr.Code
 		msg = appErr.Msg
 		httpCode = appErr.HttpCode
+	} else {
+		logger.Log.Error("internal error", zap.Error(err))
 	}
 
 	c.JSON(httpCode, Response{

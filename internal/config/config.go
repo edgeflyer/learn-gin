@@ -62,7 +62,7 @@ func Init() {
 		log.Fatalf("配置缺失：jwt.secret")
 	}
 	if Conf.Database.Driver == "" {
-		log.Fatal("配置缺失：database.dsn")
+		log.Fatal("配置缺失：database.Dsn")
 	}
 
 	log.Println("配置加载成功")
