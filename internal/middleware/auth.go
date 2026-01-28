@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// jwt
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")

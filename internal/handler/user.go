@@ -1,8 +1,13 @@
 package handler
 
 import (
+	"fmt"
+	"learn-gin/internal/logger"
+	"learn-gin/internal/redis"
 	"learn-gin/internal/response"
 	"learn-gin/internal/service"
+	"math/rand"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,17 +61,79 @@ func (h *UserHandler) Login(c *gin.Context) {
 }
 
 func (h *UserHandler) GetMe(c *gin.Context) {
-	userID, exists := c.Get("userID")
+	userIDraw, exists := c.Get("userID")
 	if !exists {
 		response.FailByError(c, response.AuthError)
 		return
 	}
 
-	username, _ := c.Get("username")
+	userID := userIDraw.(int64)
+	userProfile, err := h.srv.GetUserProfile(c.Request.Context(), userID)
+	if err != nil {
+		response.Fail(c, err)
+		return
+	}
+	
+	response.OK(c, userProfile)
+}
 
+func (h *UserHandler)SendVerificationCode(c *gin.Context) {
+	type Request struct {
+		Mail string `json:"mail" binding:"required"`
+	}
+	var req Request
+	if err := c.ShouldBindJSON(&req); err != nil {
+		logger.Log.Error("获取用户邮箱失败")
+		response.Fail(c, response.ParamError)
+		return
+	}
+
+	code := fmt.Sprintf("%06d", rand.Intn(1000000))
+
+	key := fmt.Sprintf("otp:login:%s", req.Mail)
+
+	ctx := c.Request.Context()
+	err := redis.RDB.Set(ctx, key, code, 5*time.Minute).Err()
+	if err != nil {
+		logger.Log.Error("redis插入错误")
+		response.Fail(c, response.RedisErr)
+		return
+	}
+
+	fmt.Printf("[模拟发送验证码：] 邮箱:%s, 验证码:%s\n", req.Mail, code)
 	response.OK(c, gin.H{
-		"user_id": userID,
-		"username": username,
-		"message": "身份验证通过",
+		"msg": "验证码已发送",
+		"code": code,
 	})
+}
+func (h *UserHandler)VerifyCode(c *gin.Context) {
+	type Request struct {
+		Mail string `json:"mail" binding:"required"`
+		Code string `json:"code" binding:"required"`
+	}
+	var req Request
+	if err := c.ShouldBindJSON(&req); err != nil {
+		logger.Log.Error("解码请求出错")
+		response.Fail(c, response.ParamError)
+		return
+	}
+
+	key := fmt.Sprintf("otp:login:%s", req.Mail)
+	ctx := c.Request.Context()
+	saveCode, err := redis.RDB.Get(ctx, key).Result()
+	if err != nil {
+		logger.Log.Error("redis中无该验证码")
+		response.Fail(c, response.RedisRecordNotfound)
+		return
+	}
+
+	if saveCode != req.Code {
+		logger.Log.Error("验证码错误")
+		response.Fail(c, response.VerifyCodeError)
+		return
+	}
+
+	redis.RDB.Del(ctx, key)
+
+	response.OK(c, gin.H{"msg": "登录成功"})
 }

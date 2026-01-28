@@ -35,6 +35,8 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 		api.POST("/login", middleware.RateLimitMiddleware(5, 60*time.Second), sessionHandler.Login)
 		api.DELETE("/logout", sessionHandler.Logout)
 		api.POST("/refresh", sessionHandler.Refresh)
+		api.POST("/send-code", middleware.RateLimitMiddleware(1, 60*time.Second), userHandler.SendVerificationCode)
+		api.POST("/verify-code", userHandler.VerifyCode)
 
 		authGroup := api.Group("/user")
 		authGroup.Use(middleware.Auth())

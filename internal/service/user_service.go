@@ -2,9 +2,13 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"learn-gin/internal/data"
+	"learn-gin/internal/logger"
 	"learn-gin/internal/model"
+	"learn-gin/internal/redis"
 	repo "learn-gin/internal/repository"
 	"learn-gin/internal/response"
 	"learn-gin/internal/utils"
@@ -17,6 +21,7 @@ import (
 type UserService interface {
 	Register(ctx context.Context, username, password string) error
 	Login(ctx context.Context, username, password string) (string, error)
+	GetUserProfile(ctx context.Context, userID int64) (*model.User, error)
 }
 
 type userService struct {
@@ -94,4 +99,34 @@ func (s *userService) Login(ctx context.Context,username, password string) (stri
 		return "", err
 	}
 	return token, nil
+}
+
+func (s *userService) GetUserProfile(ctx context.Context, userID int64) (*model.User, error) {
+
+	// 定义缓存
+	cacheKey := fmt.Sprintf("cache:user:profile:%d", userID)
+
+	// 尝试从redis中读取数据
+	val, err := redis.RDB.Get(ctx, cacheKey).Result()
+	if err == nil {
+		// 缓存中有数据
+		var user model.User
+		// 反序列化json到struct
+		if jsonErr := json.Unmarshal([]byte(val), &user); jsonErr == nil {
+			logger.Log.Info("[cache hit]命中缓存")
+			return &user, nil
+		}
+	}
+	// 没有命中，查询数据库
+	user, err := s.userRepo.GetByID(ctx, s.tm.GetDB(), userID)
+	if err != nil {
+		if errors.Is(err, repo.ErrUserNotFound) {
+			return nil, response.UserNotFound
+		}
+		return nil, err
+	}
+
+	data, _ := json.Marshal(user)
+	redis.RDB.Set(ctx, cacheKey, data, 30*time.Minute)
+	return user, nil
 }

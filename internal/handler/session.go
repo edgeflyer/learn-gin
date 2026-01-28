@@ -36,6 +36,7 @@ func (h *SessionHandler) Login(c *gin.Context) {
 	})
 }
 
+// 这里业务逻辑复杂了的话可以加锁
 func (h *SessionHandler) Refresh(c *gin.Context) {
 	var req struct {
 		RefreshToken string `json:"refresh_token" binding:"required"`

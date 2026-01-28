@@ -10,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 定义Lua脚本
+const limitScript = `
+local count = redis.call('INCR', KEYS[1])
+if count == 1 then
+	redis.call('EXPIRE', KEYS[1], ARGV[1])
+end
+return count
+`
+
 func RateLimitMiddleware(limit int, window time.Duration) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 获取用户id
@@ -25,7 +34,7 @@ func RateLimitMiddleware(limit int, window time.Duration) gin.HandlerFunc {
 
 		// INCR命令：原子加1
 		// 如果key不存在，redis会自动先把它变成0，再加1，返回1
-		count, err := redis.RDB.Incr(ctx, key).Result()
+		count, err := redis.RDB.Eval(ctx, limitScript, []string{key}, window.Seconds()).Int()
 		if err != nil {
 			// 如果redis连不上，为了不影响业务，通常选择放行
 			// 这叫fail open策略
@@ -34,14 +43,8 @@ func RateLimitMiddleware(limit int, window time.Duration) gin.HandlerFunc {
 			return
 		}
 
-		// 如果是第一次访问，设置过期时间
-		// 比如window是60喵，哪60秒之后，这个key就自动消失，计数清零
-		if count == 1 {
-			redis.RDB.Expire(ctx, key, window)
-		}
-
 		// 判断是否超限
-		if count > int64(limit) {
+		if count > limit {
 			c.AbortWithStatusJSON(http.StatusTooManyRequests,gin.H{
 				"code": 429,
 				"msg": "请求频繁，请稍后重试",

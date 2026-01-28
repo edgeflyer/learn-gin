@@ -25,6 +25,9 @@ var (
 	ErrRefreshTokenInvalid = NewError(10008, "refresh token invalid", http.StatusBadRequest)
 	ErrRefreshTokenExpired = NewError(10009, "refresh token expired", http.StatusBadRequest)
 	ErrRefreshTokenRevoked = NewError(10010, "refresh token revoked", http.StatusBadRequest)
+	RedisErr = NewError(10011, "redis错误", http.StatusInternalServerError)
+	RedisRecordNotfound = NewError(10012, "验证码错误或不存在", http.StatusInternalServerError)
+	VerifyCodeError = NewError(10013, "验证码错误", http.StatusBadRequest)
 )
 
 func NewError(code int, msg string, httpCode int) *AppError {
