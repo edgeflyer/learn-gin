@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"learn-gin/internal/logger"
 	"learn-gin/internal/redis"
@@ -90,6 +91,7 @@ func (h *UserHandler)SendVerificationCode(c *gin.Context) {
 
 	code := fmt.Sprintf("%06d", rand.Intn(1000000))
 
+	// 业务状态存储
 	key := fmt.Sprintf("otp:login:%s", req.Mail)
 
 	ctx := c.Request.Context()
@@ -100,9 +102,25 @@ func (h *UserHandler)SendVerificationCode(c *gin.Context) {
 		return
 	}
 
+	// 生产者：把任务丢进队列
+	taskPayload := map[string]string {
+		"mail": req.Mail,
+		"code": code,
+	}
+	// 序列化成json字符串
+	taskData, _ := json.Marshal(taskPayload)
+
+	//Rpush:从列表右侧推入(queue)
+	err = redis.RDB.RPush(ctx, "queue:mail:send", taskData).Err()
+	if err != nil {
+		// 入队失败
+		response.Fail(c, response.WorkCommitError)
+		return
+	}
+
 	fmt.Printf("[模拟发送验证码：] 邮箱:%s, 验证码:%s\n", req.Mail, code)
 	response.OK(c, gin.H{
-		"msg": "验证码已发送",
+		"msg": "验证码发送请求已受理",
 		"code": code,
 	})
 }

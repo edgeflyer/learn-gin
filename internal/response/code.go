@@ -28,6 +28,7 @@ var (
 	RedisErr = NewError(10011, "redis错误", http.StatusInternalServerError)
 	RedisRecordNotfound = NewError(10012, "验证码错误或不存在", http.StatusInternalServerError)
 	VerifyCodeError = NewError(10013, "验证码错误", http.StatusBadRequest)
+	WorkCommitError = NewError(10014, "任务提交失败", http.StatusBadRequest)
 )
 
 func NewError(code int, msg string, httpCode int) *AppError {

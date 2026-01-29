@@ -130,3 +130,34 @@
 {"level":"INFO","ts":"2026-01-27T19:34:11.086+0800","caller":"middleware/logger.go:23","msg":"request","status":200,"method":"GET","path":"/user/me","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":4.755892177}
 {"level":"INFO","ts":"2026-01-27T19:34:20.280+0800","caller":"service/user_service.go:116","msg":"[cache hit]命中缓存"}
 {"level":"INFO","ts":"2026-01-27T19:34:21.842+0800","caller":"middleware/logger.go:23","msg":"request","status":200,"method":"GET","path":"/user/me","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":6.101908681}
+{"level":"INFO","ts":"2026-01-29T15:46:01.389+0800","caller":"cmd/main.go:29","msg":"服务正在启动"}
+{"level":"INFO","ts":"2026-01-29T15:46:01.390+0800","caller":"worker/sms_worker.go:15","msg":"[worker] 正在监听邮箱任务队列"}
+{"level":"INFO","ts":"2026-01-29T15:46:01.518+0800","caller":"cmd/main.go:45","msg":"服务启动成功","port":"8080"}
+{"level":"INFO","ts":"2026-01-29T15:47:04.815+0800","caller":"middleware/logger.go:23","msg":"request","status":200,"method":"POST","path":"/send-code","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.008808029}
+{"level":"INFO","ts":"2026-01-29T15:47:28.912+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/send-code","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000408135}
+{"level":"INFO","ts":"2026-01-29T18:25:49.830+0800","caller":"cmd/main.go:38","msg":"服务正在启动"}
+{"level":"INFO","ts":"2026-01-29T18:25:49.831+0800","caller":"worker/sms_worker.go:15","msg":"[worker] 正在监听邮箱任务队列"}
+{"level":"INFO","ts":"2026-01-29T18:25:49.850+0800","caller":"cmd/main.go:55","msg":"服务启动成功","port":"8080"}
+{"level":"INFO","ts":"2026-01-29T18:28:14.155+0800","caller":"middleware/logger.go:23","msg":"request","status":400,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000994657}
+{"level":"INFO","ts":"2026-01-29T18:28:15.587+0800","caller":"middleware/logger.go:23","msg":"request","status":400,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000382919}
+{"level":"INFO","ts":"2026-01-29T18:28:16.231+0800","caller":"middleware/logger.go:23","msg":"request","status":400,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.012114839}
+{"level":"INFO","ts":"2026-01-29T18:28:16.681+0800","caller":"middleware/logger.go:23","msg":"request","status":400,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000212459}
+{"level":"INFO","ts":"2026-01-29T18:28:17.081+0800","caller":"middleware/logger.go:23","msg":"request","status":400,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.010741013}
+{"level":"INFO","ts":"2026-01-29T18:28:17.431+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.012291561}
+{"level":"INFO","ts":"2026-01-29T18:28:17.738+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000205723}
+{"level":"INFO","ts":"2026-01-29T18:28:18.634+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.00017076}
+{"level":"INFO","ts":"2026-01-29T18:28:19.081+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.002652219}
+{"level":"INFO","ts":"2026-01-29T18:28:19.531+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.005252316}
+{"level":"INFO","ts":"2026-01-29T18:28:19.831+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.002885517}
+{"level":"INFO","ts":"2026-01-29T18:28:20.081+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.010297798}
+{"level":"INFO","ts":"2026-01-29T18:28:20.293+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000161628}
+{"level":"INFO","ts":"2026-01-29T18:28:20.501+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000167959}
+{"level":"INFO","ts":"2026-01-29T18:28:20.691+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000164544}
+{"level":"INFO","ts":"2026-01-29T18:28:20.882+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.00020036}
+{"level":"INFO","ts":"2026-01-29T18:28:21.086+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000170192}
+{"level":"INFO","ts":"2026-01-29T18:28:21.293+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000217282}
+{"level":"INFO","ts":"2026-01-29T18:28:21.481+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.010030648}
+{"level":"INFO","ts":"2026-01-29T18:28:21.685+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000238702}
+{"level":"INFO","ts":"2026-01-29T18:28:21.881+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.00279603}
+{"level":"INFO","ts":"2026-01-29T18:28:22.058+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000208617}
+{"level":"INFO","ts":"2026-01-29T18:28:22.235+0800","caller":"middleware/logger.go:23","msg":"request","status":429,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"curl/8.7.1","errors":"","cost":0.000168075}
